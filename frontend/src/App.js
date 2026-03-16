@@ -3,13 +3,15 @@ import axios from "axios";
 import "./App.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 
+const API = "https://simple-todoapp-9mz6.onrender.com";
+
 function App() {
 
   const [task, setTask] = useState("");
   const [todos, setTodos] = useState([]);
 
   const fetchTodos = () => {
-    axios.get("http://localhost:5000/todos")
+    axios.get(`${API}/todos`)
       .then(res => setTodos(res.data));
   };
 
@@ -20,7 +22,7 @@ function App() {
   const addTodo = () => {
     if(!task) return;
 
-    axios.post("http://localhost:5000/todos", { task })
+    axios.post(`${API}/todos`, { task })
       .then(() => {
         setTask("");
         fetchTodos();
@@ -28,11 +30,11 @@ function App() {
   };
 
   const deleteTodo = (id) => {
-  axios.delete(`http://localhost:5000/todos/${id}`)
-    .then(() => {
-      fetchTodos();
-    });
-};
+    axios.delete(`${API}/todos/${id}`)
+      .then(() => {
+        fetchTodos();
+      });
+  };
 
   return (
     <div className="container">
@@ -57,10 +59,11 @@ function App() {
               {todo.task}
             </span>
 
-<i
-  className="fas fa-trash delete-icon"
-  onClick={() => deleteTodo(todo.id)}
-></i>
+            <i
+              className="fas fa-trash delete-icon"
+              onClick={() => deleteTodo(todo.id)}
+            ></i>
+
           </div>
         ))}
       </div>
