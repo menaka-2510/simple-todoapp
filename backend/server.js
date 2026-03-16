@@ -7,13 +7,11 @@ app.use(cors());
 app.use(express.json());
 
 const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "todo_db",
-  password: "postgres",   // உங்கள் real password
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
-
 app.get("/todos", async (req, res) => {
   const result = await pool.query("SELECT * FROM todos");
   res.json(result.rows);
