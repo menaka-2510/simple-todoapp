@@ -18,8 +18,13 @@ const pool = new Pool({
   },
 });
 app.get("/todos", async (req, res) => {
-  const result = await pool.query("SELECT * FROM todos");
-  res.json(result.rows);
+  try {
+    const result = await pool.query("SELECT * FROM todos");
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
 });
 
 app.post("/todos", async (req, res) => {
